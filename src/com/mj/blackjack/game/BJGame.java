@@ -62,6 +62,6 @@ public class BJGame
     BJHand dealCards(List<? extends BJPlayer> players,
                      List<PlayerHands> playerHands)
     {
-
+        return null;
     }
 }
