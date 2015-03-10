@@ -1,9 +1,13 @@
 package com.mj.blackjack.game;
 
+import com.mj.blackjack.card.BJCard;
 import com.mj.blackjack.card.BJCardDeck;
 import com.mj.blackjack.factory.BJFactory;
 import com.mj.blackjack.hand.BJHand;
+import com.mj.blackjack.moves.BJMove;
+import com.mj.blackjack.moves.BJNextMove;
 import com.mj.blackjack.player.BJPlayer;
+import com.mj.blackjack.rules.BJRules;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -66,19 +70,35 @@ public class BJGame
      * @param players: list of players
      * @param cardDeck: the card decks
      */
-    public void playGame(List<BJPlayer> players, BJCardDeck cardDeck)
+    public void playGame(List<BJPlayer> players, BJCardDeck cardDeck, BJRules rules, BJNextMove nextMove)
     {
         // Deal cards
         //
+        List<PlayerHands> playerHands = new LinkedList<PlayerHands>();
+        BJHand dealerHand = dealCards(players, cardDeck, playerHands);
 
-        // Check blackjack for dealer
+        // Check blackjack for dealer and players
         //
+        checkBlackjacks(dealerHand, playerHands);
 
-        // If not blackjack, play the hands
+        // TODO: insurance...
+
+        // If dealer does not have blackjack, play the hands
         //
+        if( dealerHand.getTotalValue() != 21 )
+        {
+            completePlayerHands(
+                    playerHands,
+                    dealerHand.getCard(0),
+                    rules,
+                    nextMove,
+                    cardDeck
+            );
+        }
 
         // Dealer plays hand
         //
+        playDealerHand(dealerHand, rules, cardDeck);
 
         // Payout
         //
@@ -128,5 +148,122 @@ public class BJGame
         // Return the dealer hand...  the players hands are in the "playerHands" list
         //
         return dealerHand;
+    }
+
+
+    /**
+     * Check if blackjacks on dealer and player hands
+     *
+     * @param dealerHand: the dealer hand
+     * @param playerHands: the player hands
+     */
+    void checkBlackjacks(
+            BJHand dealerHand,
+            List<PlayerHands> playerHands
+    )
+    {
+        // Check dealer hand first
+        //
+        if( dealerHand.getTotalValue() == 21 )
+        {
+            dealerHand.setState(BJHand.State.BLACKJACK);
+        }
+
+        for( PlayerHands ph : playerHands )
+        {
+            if( ph.getHands().get(0).getTotalValue() == 21 )
+            {
+                ph.getHands().get(0).setState(BJHand.State.BLACKJACK);
+            }
+        }
+    }
+
+    void completePlayerHands(List<PlayerHands> playerHands,
+                             BJCard dealerFaceCard,
+                             BJRules rules,
+                             BJNextMove nextMove,
+                             BJCardDeck cardDeck)
+    {
+
+        for( PlayerHands ph : playerHands )
+        {
+            int numberSplitsDone = 0;
+            List<BJHand> allHands = new LinkedList<BJHand>();
+            BJHand hand = ph.getHands().get(0);
+            if (hand.getState() == BJHand.State.MAY_HIT)
+            {
+                allHands.add(hand);
+            }
+
+            while( !allHands.isEmpty() )
+            {
+                BJHand currentHand = allHands.remove(0);
+                while( currentHand.getState() == BJHand.State.MAY_HIT )
+                {
+                    // Add a card right away for after a split
+                    //
+                    if( currentHand.getNbCards() == 1 )
+                    {
+                        currentHand.addCard(cardDeck.nextCard());
+                    }
+
+                    BJMove moveToMake = nextMove.getNextMove(
+                            currentHand,
+                            dealerFaceCard,
+                            rules.getPossibleMoves(currentHand, numberSplitsDone)
+                    );
+
+                    // TODO: add bets
+                    //
+                    switch( moveToMake )
+                    {
+                        case HIT:
+                            currentHand.addCard(cardDeck.nextCard());
+                            break;
+
+                        case STAY:
+                            currentHand.setState(BJHand.State.STAY);
+                            break;
+
+                        case DOUBLE:
+                            currentHand.addCard(cardDeck.nextCard());
+                            if( currentHand.getState() == BJHand.State.MAY_HIT )
+                            {
+                                currentHand.setState(BJHand.State.STAY);
+                            }
+                            break;
+
+                        case SURRENDER:
+                            currentHand.setState(BJHand.State.SURRENDER);
+                            break;
+
+                        case SPLIT:
+                        {
+                            BJHand newHand = hand.splitHand();
+                            allHands.add(newHand);
+                            break;
+                        }
+
+                        default:
+                            throw new IllegalStateException("NOT IMPLEMENTED");
+                    }
+                }
+            }
+        }
+    }
+
+    void playDealerHand(BJHand dealerHand, BJRules rules, BJCardDeck cardDeck)
+    {
+        boolean mustHitSoft17 = rules.doesDealerHitOnSoft17();
+
+        for(;;)
+        {
+            int total = dealerHand.getTotalValue();
+
+            if( total > 17 ) break;
+            if( total == 17 && (!mustHitSoft17 || !dealerHand.isSoftHand())) break;
+
+            dealerHand.addCard(cardDeck.nextCard());
+        }
     }
 }

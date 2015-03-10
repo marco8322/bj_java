@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Created by marcojacques on 15-03-03.
+ *
+ * Implementation of a hand
  */
 public class BJHandImpl
         implements BJHand
@@ -16,6 +18,7 @@ public class BJHandImpl
     private List<BJCard> cards;
     private int totalValue;
     private boolean softHand;
+    private State state;
 
     public BJHandImpl(BJPlayer player)
     {
@@ -25,6 +28,7 @@ public class BJHandImpl
         this.cards = new LinkedList<BJCard>();
         this.totalValue = 0;
         this.softHand = false;
+        this.state = State.MAY_HIT;
     }
 
     @Override
@@ -60,6 +64,17 @@ public class BJHandImpl
         {
             softHand = false;
             totalValue -= 10;
+        }
+
+        // Change the state...
+        //
+        if( totalValue == 21 )
+        {
+            state = State.STAY;
+        }
+        else if( totalValue > 21 )
+        {
+            state = State.BUSTED;
         }
     }
 
@@ -99,5 +114,24 @@ public class BJHandImpl
         }
 
         return newHand;
+    }
+
+    @Override
+    public void setState(State state)
+    {
+        assert state != null;
+        this.state = state;
+    }
+
+    @Override
+    public State getState()
+    {
+        return state;
+    }
+
+    @Override
+    public int getNbCards()
+    {
+        return cards.size();
     }
 }

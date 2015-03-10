@@ -12,6 +12,19 @@ import com.mj.blackjack.player.BJPlayer;
 public interface BJHand
 {
     /**
+     * State of the hand
+     */
+    enum State
+    {
+        MAY_HIT,
+        BLACKJACK,
+        STAY,
+        BUSTED,
+        SURRENDER,
+        SPLIT
+    }
+
+    /**
      * Return the player to which the hand belongs to
      *
      * @return the player
@@ -53,4 +66,31 @@ public interface BJHand
      * @return return new hand
      */
     BJHand splitHand();
+
+    /**
+     * Set the state for this hand
+     */
+    void setState(State state);
+
+    /**
+     * Return the state for this hand
+     *
+     * @return state
+     */
+    State getState();
+
+    /**
+     * Return the number of cards
+     *
+     * @return number of cards
+     */
+    int getNbCards();
+
+    /**
+     * Get a card from the hand
+     *
+     * @param i: which card
+     * @return the card
+     */
+    BJCard getCard(int i);
 }
