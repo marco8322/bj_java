@@ -2,7 +2,14 @@ package com.mj.blackjack.player;
 
 /**
  * Created by marcojacques on 15-03-03.
+ *
+ * Interface for player
  */
 public interface BJPlayer
 {
+    void addMoney(int money);
+
+    void removeMoney(int money);
+
+    int getMoneyAmount();
 }

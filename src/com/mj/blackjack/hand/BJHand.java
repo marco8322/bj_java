@@ -20,8 +20,7 @@ public interface BJHand
         BLACKJACK,
         STAY,
         BUSTED,
-        SURRENDER,
-        SPLIT
+        SURRENDER
     }
 
     /**
@@ -93,4 +92,6 @@ public interface BJHand
      * @return the card
      */
     BJCard getCard(int i);
+
+
 }
