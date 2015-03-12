@@ -271,7 +271,7 @@ public class TestBJHand
 
         try
         {
-            aHand.addCard(getCard(9));
+            aHand.splitHand();
             fail();
         }
         catch( IllegalStateException e )
