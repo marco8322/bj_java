@@ -1,7 +1,6 @@
 package com.mj.blackjack.hand;
 
 import com.mj.blackjack.card.BJCard;
-import com.mj.blackjack.player.BJPlayer;
 import junit.framework.TestCase;
 
 /**
@@ -12,13 +11,6 @@ import junit.framework.TestCase;
 public class TestBJHand
     extends TestCase
 {
-    private BJPlayer getPlayer()
-    {
-        return new BJPlayer()
-        {
-        };
-    }
-
     private BJCard getCard(final int value)
     {
         return new BJCard()
@@ -33,15 +25,14 @@ public class TestBJHand
 
     public void testSimple()
     {
-        BJPlayer aPlayer = getPlayer();
-        BJHand aHand = new BJHandImpl(aPlayer);
+        BJHand aHand = new BJHandImpl();
 
         // Test init
         //
-        assertSame(aPlayer, aHand.getPlayer());
         assertEquals(0, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         // Add one card
         //
@@ -49,6 +40,7 @@ public class TestBJHand
         assertEquals(4, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         // Add another card
         //
@@ -56,6 +48,7 @@ public class TestBJHand
         assertEquals(9, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         // Add another card
         //
@@ -63,66 +56,76 @@ public class TestBJHand
         assertEquals(19, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
     }
 
     public void testSoftHand1()
     {
-        BJHand aHand = new BJHandImpl(getPlayer());
+        BJHand aHand = new BJHandImpl();
 
         aHand.addCard(getCard(11));
         assertEquals(11, aHand.getTotalValue());
         assertTrue(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         aHand.addCard(getCard(6));
         assertEquals(17, aHand.getTotalValue());
         assertTrue(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         aHand.addCard(getCard(5));
         assertEquals(12, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         aHand.addCard(getCard(2));
         assertEquals(14, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         aHand.addCard(getCard(11));
         assertEquals(15, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
     }
 
     public void testSoftHand2()
     {
-        BJHand aHand = new BJHandImpl(getPlayer());
+        BJHand aHand = new BJHandImpl();
 
         aHand.addCard(getCard(7));
         assertEquals(7, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         aHand.addCard(getCard(11));
         assertEquals(18, aHand.getTotalValue());
         assertTrue(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         aHand.addCard(getCard(3));
         assertEquals(21, aHand.getTotalValue());
         assertTrue(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         aHand.addCard(getCard(11));
         assertEquals(12, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
     }
 
     public void testSplit1()
     {
-        BJHand aHand = new BJHandImpl(getPlayer());
+        BJHand aHand = new BJHandImpl();
 
         aHand.addCard(getCard(4));
         aHand.addCard(getCard(4));
@@ -130,21 +133,23 @@ public class TestBJHand
         assertEquals(8, aHand.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertTrue(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         BJHand aHand2 = aHand.splitHand();
 
-        assertSame(aHand.getPlayer(), aHand2.getPlayer());
         assertEquals(4, aHand.getTotalValue());
         assertEquals(4, aHand2.getTotalValue());
         assertFalse(aHand.isSoftHand());
         assertFalse(aHand2.isSoftHand());
         assertFalse(aHand.mayBeSplit());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
+        assertEquals(BJHand.State.MAY_HIT, aHand2.getState());
     }
 
     public void testSplit2()
     {
-        BJHand aHand = new BJHandImpl(getPlayer());
+        BJHand aHand = new BJHandImpl();
 
         aHand.addCard(getCard(11));
         aHand.addCard(getCard(11));
@@ -152,15 +157,126 @@ public class TestBJHand
         assertEquals(12, aHand.getTotalValue());
         assertTrue(aHand.isSoftHand());
         assertTrue(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
 
         BJHand aHand2 = aHand.splitHand();
 
-        assertSame(aHand.getPlayer(), aHand2.getPlayer());
         assertEquals(11, aHand.getTotalValue());
         assertEquals(11, aHand2.getTotalValue());
         assertTrue(aHand.isSoftHand());
         assertTrue(aHand2.isSoftHand());
         assertFalse(aHand.mayBeSplit());
         assertFalse(aHand.mayBeSplit());
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
+        assertEquals(BJHand.State.MAY_HIT, aHand2.getState());
+    }
+
+    public void testBust()
+    {
+        BJHand aHand = new BJHandImpl();
+
+        aHand.addCard(getCard(10));
+        aHand.addCard(getCard(8));
+        assertEquals(BJHand.State.MAY_HIT, aHand.getState());
+
+        aHand.addCard(getCard(8));
+        assertEquals(BJHand.State.BUSTED, aHand.getState());
+
+        try
+        {
+            aHand.addCard(getCard(9));
+            fail();
+        }
+        catch( IllegalStateException e )
+        {
+            // OK...
+        }
+    }
+
+    public void testBlackjack()
+    {
+        BJHand aHand = new BJHandImpl();
+
+        aHand.addCard(getCard(10));
+        aHand.addCard(getCard(11));
+
+        aHand.setState(BJHand.State.BLACKJACK);
+        assertEquals(BJHand.State.BLACKJACK, aHand.getState());
+
+        try
+        {
+            aHand.addCard(getCard(9));
+            fail();
+        }
+        catch( IllegalStateException e )
+        {
+            // OK...
+        }
+    }
+
+    public void testSurrender()
+    {
+        BJHand aHand = new BJHandImpl();
+
+        aHand.addCard(getCard(10));
+        aHand.addCard(getCard(6));
+
+        aHand.setState(BJHand.State.SURRENDER);
+        assertEquals(BJHand.State.SURRENDER, aHand.getState());
+
+        try
+        {
+            aHand.addCard(getCard(9));
+            fail();
+        }
+        catch( IllegalStateException e )
+        {
+            // OK...
+        }
+    }
+
+    public void testStayNonSplit()
+    {
+        BJHand aHand = new BJHandImpl();
+
+        aHand.addCard(getCard(10));
+        aHand.addCard(getCard(7));
+
+        aHand.setState(BJHand.State.STAY);
+        assertEquals(BJHand.State.STAY, aHand.getState());
+
+        try
+        {
+            aHand.addCard(getCard(9));
+            fail();
+        }
+        catch( IllegalStateException e )
+        {
+            // OK...
+        }
+    }
+
+    public void testStaySplit()
+    {
+        BJHand aHand = new BJHandImpl();
+
+        aHand.addCard(getCard(7));
+        aHand.addCard(getCard(7));
+        assertTrue(aHand.mayBeSplit());
+
+        aHand.setState(BJHand.State.STAY);
+        assertEquals(BJHand.State.STAY, aHand.getState());
+
+        assertFalse(aHand.mayBeSplit());
+
+        try
+        {
+            aHand.addCard(getCard(9));
+            fail();
+        }
+        catch( IllegalStateException e )
+        {
+            // OK...
+        }
     }
 }
