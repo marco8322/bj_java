@@ -35,22 +35,37 @@ public class BJGame
     }
 
     /**
+     * Inner class for an hand with a bet
+     */
+    class HandWithBet
+    {
+        final BJHand hand;
+        int bet;
+
+        HandWithBet(BJHand hand, int bet)
+        {
+            this.hand = hand;
+            this.bet = bet;
+        }
+    }
+
+    /**
      * Inner class for having the players with their hands
      */
     class PlayerHands
     {
         final BJPlayer player;
-        final List<BJHand> hands;
+        final List<HandWithBet> handsWithBets;
 
         PlayerHands(BJPlayer player)
         {
             this.player = player;
-            this.hands = new LinkedList<BJHand>();
+            this.handsWithBets = new LinkedList<HandWithBet>();
         }
 
         void addHand(BJHand hand)
         {
-            hands.add(hand);
+            handsWithBets.add(new HandWithBet(hand, player.getInitialBet()));
         }
 
         BJPlayer getPlayer()
@@ -58,9 +73,9 @@ public class BJGame
             return player;
         }
 
-        List<? extends BJHand> getHands()
+        List<? extends HandWithBet> getHandsWithBets()
         {
-            return hands;
+            return handsWithBets;
         }
     }
 
@@ -85,9 +100,10 @@ public class BJGame
 
         // If dealer does not have blackjack, play the hands
         //
+        boolean shouldDealerPlay = false;
         if( dealerHand.getTotalValue() != 21 )
         {
-            completePlayerHands(
+            shouldDealerPlay = completePlayerHands(
                     playerHands,
                     dealerHand.getCard(0),
                     rules,
@@ -98,11 +114,14 @@ public class BJGame
 
         // Dealer plays hand
         //
-        playDealerHand(dealerHand, rules, cardDeck);
+        if( shouldDealerPlay )
+        {
+            playDealerHand(dealerHand, rules, cardDeck);
+        }
 
         // Payout
         //
-
+        doPayouts(dealerHand, playerHands, rules);
     }
 
 
@@ -129,7 +148,7 @@ public class BJGame
         {
             PlayerHands aPlayerHands = new PlayerHands(player);
             aPlayerHands.addHand(factory.createHand(player));
-
+            player.removeMoney(player.getInitialBet());
             playerHands.add(aPlayerHands);
         }
 
@@ -139,7 +158,7 @@ public class BJGame
         {
             for( PlayerHands aPlayerHands : playerHands )
             {
-                aPlayerHands.getHands().get(0).addCard(cardDeck.nextCard());
+                aPlayerHands.getHandsWithBets().get(0).hand.addCard(cardDeck.nextCard());
             }
 
             dealerHand.addCard(cardDeck.nextCard());
@@ -171,33 +190,44 @@ public class BJGame
 
         for( PlayerHands ph : playerHands )
         {
-            if( ph.getHands().get(0).getTotalValue() == 21 )
+            BJHand hand = ph.getHandsWithBets().get(0).hand;
+
+            if( hand.getTotalValue() == 21 )
             {
-                ph.getHands().get(0).setState(BJHand.State.BLACKJACK);
+                hand.setState(BJHand.State.BLACKJACK);
             }
         }
     }
 
-    void completePlayerHands(List<PlayerHands> playerHands,
-                             BJCard dealerFaceCard,
-                             BJRules rules,
-                             BJNextMove nextMove,
-                             BJCardDeck cardDeck)
+    /**
+     * Complete the player hands
+     *
+     * @param playerHands: list of players with their hands
+     * @param dealerFaceCard: the dealer face card
+     * @param rules: the rules for the game
+     * @param nextMove: the next move getter
+     * @param cardDeck: the card deck
+     * @return true if there is any hands that stayed (requires the dealer to deal)
+     */
+    boolean completePlayerHands(List<PlayerHands> playerHands,
+                                BJCard dealerFaceCard,
+                                BJRules rules,
+                                BJNextMove nextMove,
+                                BJCardDeck cardDeck)
     {
+        boolean anyHandStay = false;
 
         for( PlayerHands ph : playerHands )
         {
             int numberSplitsDone = 0;
-            List<BJHand> allHands = new LinkedList<BJHand>();
-            BJHand hand = ph.getHands().get(0);
-            if (hand.getState() == BJHand.State.MAY_HIT)
-            {
-                allHands.add(hand);
-            }
+            List<HandWithBet> allHandsWithBets = new LinkedList<HandWithBet>();
+            HandWithBet handWithBet = ph.getHandsWithBets().get(0);
+            allHandsWithBets.add(handWithBet);
 
-            while( !allHands.isEmpty() )
+            while( !allHandsWithBets.isEmpty() )
             {
-                BJHand currentHand = allHands.remove(0);
+                HandWithBet currentHandWithBet = allHandsWithBets.remove(0);
+                BJHand currentHand = currentHandWithBet.hand;
                 while( currentHand.getState() == BJHand.State.MAY_HIT )
                 {
                     // Add a card right away for after a split
@@ -208,9 +238,9 @@ public class BJGame
                     }
 
                     BJMove moveToMake = nextMove.getNextMove(
-                            currentHand,
+                            currentHandWithBet.hand,
                             dealerFaceCard,
-                            rules.getPossibleMoves(currentHand, numberSplitsDone)
+                            rules.getPossibleMoves(currentHandWithBet.hand, numberSplitsDone)
                     );
 
                     // TODO: add bets
@@ -219,6 +249,10 @@ public class BJGame
                     {
                         case HIT:
                             currentHand.addCard(cardDeck.nextCard());
+                            if( currentHand.getTotalValue() == 21 )
+                            {
+                                currentHand.setState(BJHand.State.STAY);
+                            }
                             break;
 
                         case STAY:
@@ -226,12 +260,18 @@ public class BJGame
                             break;
 
                         case DOUBLE:
+                        {
+                            int initialBet = ph.getPlayer().getInitialBet();
                             currentHand.addCard(cardDeck.nextCard());
-                            if( currentHand.getState() == BJHand.State.MAY_HIT )
+                            ph.getPlayer().removeMoney(initialBet);
+                            currentHandWithBet.bet += initialBet;
+
+                            if (currentHand.getState() == BJHand.State.MAY_HIT)
                             {
                                 currentHand.setState(BJHand.State.STAY);
                             }
                             break;
+                        }
 
                         case SURRENDER:
                             currentHand.setState(BJHand.State.SURRENDER);
@@ -239,8 +279,8 @@ public class BJGame
 
                         case SPLIT:
                         {
-                            BJHand newHand = hand.splitHand();
-                            allHands.add(newHand);
+                            BJHand newHand = currentHand.splitHand();
+                            allHandsWithBets.add(new HandWithBet(newHand, ph.getPlayer().getInitialBet()));
                             break;
                         }
 
@@ -248,10 +288,26 @@ public class BJGame
                             throw new IllegalStateException("NOT IMPLEMENTED");
                     }
                 }
+
+                // If at least one hand has stay, we need the dealer to deal
+                //
+                if( currentHand.getState() == BJHand.State.STAY )
+                {
+                    anyHandStay = true;
+                }
             }
         }
+
+        return anyHandStay;
     }
 
+    /**
+     * Play the dealer hand
+     *
+     * @param dealerHand: the dealer hand
+     * @param rules: the rules of the game
+     * @param cardDeck: the card deck
+     */
     void playDealerHand(BJHand dealerHand, BJRules rules, BJCardDeck cardDeck)
     {
         boolean mustHitSoft17 = rules.doesDealerHitOnSoft17();
@@ -264,6 +320,82 @@ public class BJGame
             if( total == 17 && (!mustHitSoft17 || !dealerHand.isSoftHand())) break;
 
             dealerHand.addCard(cardDeck.nextCard());
+        }
+    }
+
+    /**
+     * Do the payouts
+     *
+     * @param dealerHand: the dealer hand
+     * @param playerHands: the player hands
+     * @param rules: the rules (for payout on blackjack and surrender)
+     */
+    void doPayouts(BJHand dealerHand, List<PlayerHands> playerHands, BJRules rules)
+    {
+        int dealerTotal = dealerHand.getTotalValue();
+        boolean dealerHasBlackjack = (dealerHand.getState() == BJHand.State.BLACKJACK);
+
+        for( PlayerHands ph : playerHands )
+        {
+            BJPlayer player = ph.getPlayer();
+
+            for( HandWithBet handWithBet : ph.getHandsWithBets() )
+            {
+                int bet = handWithBet.bet;
+                BJHand hand = handWithBet.hand;
+
+                switch( hand.getState() )
+                {
+                    case BLACKJACK:
+                    {
+                        if( !dealerHasBlackjack )
+                        {
+                            // Pays blackjack
+                            //
+                            player.addMoney(bet + rules.payBlackjack(bet));
+                        }
+                        else
+                        {
+                            // push
+                            //
+                            player.addMoney(bet);
+                        }
+
+                        break;
+                    }
+
+                    case BUSTED:  // nothing to do
+                        break;
+
+                    case STAY:
+                    {
+                        int playerTotal = hand.getTotalValue();
+                        if( !dealerHasBlackjack )
+                        {
+                            if( playerTotal > dealerTotal )
+                            {
+                                player.addMoney(bet + bet);
+                            }
+                            else if ( playerTotal == dealerTotal )
+                            {
+                                player.addMoney(bet);
+                            }
+                        }
+
+                        break;
+                    }
+
+                    case SURRENDER:
+                    {
+                        assert !dealerHasBlackjack;
+                        player.addMoney(rules.paySurrender(bet));
+                        break;
+                    }
+
+                    default:
+                        throw new IllegalStateException("SHOULD NOT BE HERE FOR PAYOUT");
+                }
+            }
         }
     }
 }

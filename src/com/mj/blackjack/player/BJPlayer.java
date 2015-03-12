@@ -12,4 +12,10 @@ public interface BJPlayer
     void removeMoney(int money);
 
     int getMoneyAmount();
+
+    void setInitialBet(int money);
+
+    void addDoubleBet(int money);
+
+    int getInitialBet();
 }

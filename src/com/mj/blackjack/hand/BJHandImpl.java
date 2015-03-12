@@ -1,7 +1,6 @@
 package com.mj.blackjack.hand;
 
 import com.mj.blackjack.card.BJCard;
-import com.mj.blackjack.player.BJPlayer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,32 +13,28 @@ import java.util.List;
 public class BJHandImpl
         implements BJHand
 {
-    private final BJPlayer player;
     private List<BJCard> cards;
     private int totalValue;
     private boolean softHand;
     private State state;
 
-    public BJHandImpl(BJPlayer player)
+    public BJHandImpl()
     {
-        assert player != null;
-
-        this.player = player;
         this.cards = new LinkedList<BJCard>();
         this.totalValue = 0;
         this.softHand = false;
         this.state = State.MAY_HIT;
     }
 
-    @Override
-    public BJPlayer getPlayer()
-    {
-        return player;
-    }
 
     @Override
     public void addCard(BJCard card)
     {
+        if( state != State.MAY_HIT )
+        {
+            throw new IllegalStateException("Cannot add new card... must have MAY_HIT status");
+        }
+
         int cardValue = card.getValue();
         cards.add(card);
 
@@ -68,11 +63,9 @@ public class BJHandImpl
 
         // Change the state...
         //
-        if( totalValue == 21 )
-        {
-            state = State.STAY;
-        }
-        else if( totalValue > 21 )
+        // NOTE: for == 21, we do not change the state, as in some games, we might allow to play further
+        //
+        if( totalValue > 21 )
         {
             state = State.BUSTED;
         }
@@ -93,15 +86,19 @@ public class BJHandImpl
     @Override
     public boolean mayBeSplit()
     {
-        return cards.size() == 2 && cards.get(0).getValue() == cards.get(1).getValue();
+        return cards.size() == 2 && cards.get(0).getValue() == cards.get(1).getValue() &&
+                state == State.MAY_HIT;
     }
 
     @Override
     public BJHand splitHand()
     {
-        assert mayBeSplit();
+        if(!mayBeSplit())
+        {
+            throw new IllegalStateException("Cannot split hand");
+        }
 
-        BJHand newHand = new BJHandImpl(this.player);
+        BJHand newHand = new BJHandImpl();
         newHand.addCard(cards.get(1));
 
         cards.remove(1);
@@ -120,6 +117,12 @@ public class BJHandImpl
     public void setState(State state)
     {
         assert state != null;
+
+        if( this.state != State.MAY_HIT )
+        {
+            throw new IllegalStateException("Cannot change state");
+        }
+
         this.state = state;
     }
 
@@ -133,5 +136,11 @@ public class BJHandImpl
     public int getNbCards()
     {
         return cards.size();
+    }
+
+    @Override
+    public BJCard getCard(int i)
+    {
+        return cards.get(i);
     }
 }

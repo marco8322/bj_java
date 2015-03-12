@@ -24,13 +24,6 @@ public interface BJHand
     }
 
     /**
-     * Return the player to which the hand belongs to
-     *
-     * @return the player
-     */
-    BJPlayer getPlayer();
-
-    /**
      * Add a card to the hand
      *
      * @param card: card to add
@@ -92,6 +85,4 @@ public interface BJHand
      * @return the card
      */
     BJCard getCard(int i);
-
-
 }

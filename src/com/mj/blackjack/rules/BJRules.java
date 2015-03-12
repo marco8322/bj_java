@@ -23,4 +23,8 @@ public interface BJRules
     boolean doubleAllowedAfterSplit();
 
     Set<BJMove> getPossibleMoves(BJHand hand, int numberSplitsDone);
+
+    int payBlackjack(int bet);
+
+    int paySurrender(int bet);
 }
