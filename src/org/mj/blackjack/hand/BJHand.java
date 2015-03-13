@@ -1,7 +1,6 @@
-package com.mj.blackjack.hand;
+package org.mj.blackjack.hand;
 
-import com.mj.blackjack.card.BJCard;
-import com.mj.blackjack.player.BJPlayer;
+import org.mj.blackjack.card.BJCard;
 
 /**
  * Created by marcojacques on 15-03-03.

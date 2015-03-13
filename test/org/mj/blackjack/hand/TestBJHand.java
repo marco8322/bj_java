@@ -1,7 +1,7 @@
-package com.mj.blackjack.hand;
+package org.mj.blackjack.hand;
 
-import com.mj.blackjack.card.BJCard;
 import junit.framework.TestCase;
+import org.mj.blackjack.card.BJCard;
 
 /**
  * Created by marcojacques on 15-03-03.

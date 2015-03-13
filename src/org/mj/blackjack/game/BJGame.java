@@ -1,13 +1,13 @@
-package com.mj.blackjack.game;
+package org.mj.blackjack.game;
 
-import com.mj.blackjack.card.BJCard;
-import com.mj.blackjack.card.BJCardDeck;
-import com.mj.blackjack.factory.BJFactory;
-import com.mj.blackjack.hand.BJHand;
-import com.mj.blackjack.moves.BJMove;
-import com.mj.blackjack.moves.BJNextMove;
-import com.mj.blackjack.player.BJPlayer;
-import com.mj.blackjack.rules.BJRules;
+import org.mj.blackjack.card.BJCard;
+import org.mj.blackjack.card.BJCardDeck;
+import org.mj.blackjack.factory.BJFactory;
+import org.mj.blackjack.hand.BJHand;
+import org.mj.blackjack.moves.BJMove;
+import org.mj.blackjack.moves.BJNextMove;
+import org.mj.blackjack.player.BJPlayer;
+import org.mj.blackjack.rules.BJRules;
 
 import java.util.LinkedList;
 import java.util.List;

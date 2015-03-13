@@ -1,4 +1,4 @@
-package com.mj.blackjack.player;
+package org.mj.blackjack.player;
 
 /**
  * Created by marcojacques on 15-03-03.

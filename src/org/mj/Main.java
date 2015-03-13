@@ -1,4 +1,4 @@
-package com.mj;
+package org.mj;
 
 public class Main {
 

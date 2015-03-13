@@ -1,6 +1,6 @@
-package com.mj.blackjack.hand;
+package org.mj.blackjack.hand;
 
-import com.mj.blackjack.card.BJCard;
+import org.mj.blackjack.card.BJCard;
 
 import java.util.LinkedList;
 import java.util.List;

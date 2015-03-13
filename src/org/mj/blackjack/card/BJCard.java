@@ -1,4 +1,4 @@
-package com.mj.blackjack.card;
+package org.mj.blackjack.card;
 
 /**
  * Created by marcojacques on 15-03-03.

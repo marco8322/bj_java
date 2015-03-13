@@ -1,4 +1,4 @@
-package com.mj.blackjack.moves;
+package org.mj.blackjack.moves;
 
 /**
  * Created by marcojacques on 2015-03-09.

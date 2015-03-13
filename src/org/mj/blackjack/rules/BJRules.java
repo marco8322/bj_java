@@ -1,7 +1,7 @@
-package com.mj.blackjack.rules;
+package org.mj.blackjack.rules;
 
-import com.mj.blackjack.hand.BJHand;
-import com.mj.blackjack.moves.BJMove;
+import org.mj.blackjack.hand.BJHand;
+import org.mj.blackjack.moves.BJMove;
 
 import java.util.Set;
 
