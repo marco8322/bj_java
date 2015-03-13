@@ -139,7 +139,7 @@ public class BJGame
     {
         // Create the dealer hand
         //
-        BJHand dealerHand = factory.createHand(factory.createDealer());
+        BJHand dealerHand = factory.createHand();
 
 
         // Create the players hands
@@ -147,7 +147,7 @@ public class BJGame
         for( BJPlayer player : players )
         {
             PlayerHands aPlayerHands = new PlayerHands(player);
-            aPlayerHands.addHand(factory.createHand(player));
+            aPlayerHands.addHand(factory.createHand());
             player.removeMoney(player.getInitialBet());
             playerHands.add(aPlayerHands);
         }

@@ -1,5 +1,6 @@
 package org.mj.blackjack.factory;
 
+import org.mj.blackjack.card.BJCardDeck;
 import org.mj.blackjack.hand.BJHand;
 import org.mj.blackjack.player.BJPlayer;
 
@@ -10,9 +11,7 @@ import org.mj.blackjack.player.BJPlayer;
  */
 public interface BJFactory
 {
-    BJPlayer createPlayer(String name);
+    BJHand createHand();
 
-    BJPlayer createDealer();
-
-    BJHand createHand(BJPlayer player);
+    public BJCardDeck createCardDeck(int values[]);
 }

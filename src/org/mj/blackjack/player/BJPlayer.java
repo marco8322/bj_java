@@ -15,7 +15,5 @@ public interface BJPlayer
 
     void setInitialBet(int money);
 
-    void addDoubleBet(int money);
-
     int getInitialBet();
 }
