@@ -27,10 +27,10 @@ public class BJFactoryImpl
     {
         assert values != null;
 
-        Stack<BJCard> cards = new Stack<BJCard>();
-        for( int val : values )
+        BJCard[] cards = new BJCard[values.length];
+        for( int i = 0; i < values.length; ++i )
         {
-            cards.push(new BJCardImpl(val));
+            cards[i] = new BJCardImpl(values[i]);
         }
 
         return new BJCardDeckImpl(cards);

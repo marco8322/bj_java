@@ -1,8 +1,6 @@
 package org.mj.blackjack.game;
 
 import junit.framework.TestCase;
-import org.mj.blackjack.card.BJCardDeckImpl;
-import org.mj.blackjack.card.BJCardImpl;
 import org.mj.blackjack.factory.BJFactory;
 import org.mj.blackjack.factory.BJFactoryImpl;
 import org.mj.blackjack.hand.BJHand;
@@ -35,7 +33,7 @@ public class TestDealCards
         List<BJGame.PlayerHands> playerHandses = new LinkedList<BJGame.PlayerHands>();
         BJHand dealerHand = game.dealCards(
                 Arrays.asList(bjPlayer1, bjPlayer2),
-                factory.createCardDeck(new int[]{2,3,4,5,6,7}),
+                factory.createCardDeck(new int[]{7,6,5,4,3,2}),
                 playerHandses
         );
 

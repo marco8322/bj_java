@@ -1,8 +1,5 @@
 package org.mj.blackjack.card;
 
-import java.util.Collection;
-import java.util.Stack;
-
 /**
  * Created by marcojacques on 15-03-12.
  *
@@ -11,21 +8,24 @@ import java.util.Stack;
 public class BJCardDeckImpl
     implements BJCardDeck
 {
-    private final Stack<BJCard> cards;
+    private final BJCard[] cards;
+    private int currCard;
 
-    public BJCardDeckImpl(Collection<? extends BJCard> cards)
+    public BJCardDeckImpl(BJCard[] cards)
     {
         assert cards != null;
 
-        this.cards = new Stack<BJCard>();
-        this.cards.addAll(cards);
+        this.cards = new BJCard[cards.length];
+        System.arraycopy(cards, 0, this.cards, 0, cards.length);
+
+        currCard = 0;
     }
 
     @Override
     public BJCard nextCard()
     {
-        assert !cards.empty();
+        assert currCard < cards.length;
 
-        return cards.pop();
+        return cards[currCard++];
     }
 }
