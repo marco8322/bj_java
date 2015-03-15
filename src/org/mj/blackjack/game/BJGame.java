@@ -37,7 +37,7 @@ public class BJGame
     /**
      * Inner class for an hand with a bet
      */
-    class HandWithBet
+    static class HandWithBet
     {
         final BJHand hand;
         int bet;
@@ -52,7 +52,7 @@ public class BJGame
     /**
      * Inner class for having the players with their hands
      */
-    class PlayerHands
+    static class PlayerHands
     {
         final BJPlayer player;
         final List<HandWithBet> handsWithBets;
