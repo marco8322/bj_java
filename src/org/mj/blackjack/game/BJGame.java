@@ -9,6 +9,7 @@ import org.mj.blackjack.moves.BJNextMove;
 import org.mj.blackjack.player.BJPlayer;
 import org.mj.blackjack.rules.BJRules;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -240,7 +241,9 @@ public class BJGame
                     BJMove moveToMake = nextMove.getNextMove(
                             currentHandWithBet.hand,
                             dealerFaceCard,
-                            rules.getPossibleMoves(currentHandWithBet.hand, numberSplitsDone)
+                            factory.createPossibleMovesComputer().getPossibleMoves(
+                                    currentHandWithBet.hand, numberSplitsDone, rules
+                            )
                     );
 
                     // TODO: add bets
@@ -300,6 +303,7 @@ public class BJGame
 
         return anyHandStay;
     }
+
 
     /**
      * Play the dealer hand

@@ -3,7 +3,7 @@ package org.mj.blackjack.moves;
 import org.mj.blackjack.card.BJCard;
 import org.mj.blackjack.hand.BJHand;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Created by marcojacques on 2015-03-09.
@@ -12,5 +12,5 @@ import java.util.Set;
  */
 public interface BJNextMove
 {
-    BJMove getNextMove(BJHand playerHand, BJCard dealerFaceCard, Set<? extends BJMove> possibleMoves);
+    BJMove getNextMove(BJHand playerHand, BJCard dealerFaceCard, Collection<? extends BJMove> possibleMoves);
 }

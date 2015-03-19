@@ -6,6 +6,8 @@ import org.mj.blackjack.card.BJCardDeckImpl;
 import org.mj.blackjack.card.BJCardImpl;
 import org.mj.blackjack.hand.BJHand;
 import org.mj.blackjack.hand.BJHandImpl;
+import org.mj.blackjack.moves.BJPossibleMoves;
+import org.mj.blackjack.moves.BJStandardPossibleMoves;
 
 import java.util.Stack;
 
@@ -34,5 +36,11 @@ public class BJFactoryImpl
         }
 
         return new BJCardDeckImpl(cards);
+    }
+
+    @Override
+    public BJPossibleMoves createPossibleMovesComputer()
+    {
+        return new BJStandardPossibleMoves();
     }
 }

@@ -2,6 +2,7 @@ package org.mj.blackjack.factory;
 
 import org.mj.blackjack.card.BJCardDeck;
 import org.mj.blackjack.hand.BJHand;
+import org.mj.blackjack.moves.BJPossibleMoves;
 import org.mj.blackjack.player.BJPlayer;
 
 /**
@@ -14,4 +15,6 @@ public interface BJFactory
     BJHand createHand();
 
     public BJCardDeck createCardDeck(int values[]);
+
+    public BJPossibleMoves createPossibleMovesComputer();
 }

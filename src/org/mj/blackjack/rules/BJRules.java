@@ -16,6 +16,8 @@ public interface BJRules
 
     int maxNumberSplits();
 
+    boolean isDoubleAllowed(BJHand bjHand);
+
     boolean surrenderAllowed();
 
     boolean doesDealerHitOnSoft17();
