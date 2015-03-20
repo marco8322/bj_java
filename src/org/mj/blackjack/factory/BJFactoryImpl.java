@@ -37,10 +37,4 @@ public class BJFactoryImpl
 
         return new BJCardDeckImpl(cards);
     }
-
-    @Override
-    public BJPossibleMoves createPossibleMovesComputer()
-    {
-        return new BJStandardPossibleMoves();
-    }
 }

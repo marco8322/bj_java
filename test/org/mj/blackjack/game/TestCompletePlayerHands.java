@@ -24,7 +24,7 @@ public class TestCompletePlayerHands
      */
     public void testSimpleStay()
     {
-        BJFactory factory = new BJFactoryImpl();
+/*        BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory);
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -36,10 +36,10 @@ public class TestCompletePlayerHands
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
                 new BJCardImpl(10),
-                null /* rules */,
-                null /* next move */,
-                null /* Card deck */
-        );
+                null /* rules * /,
+                null /* next move * /,
+                null /* Card deck * /
+        ); */
     }
 
     private List<BJGame.PlayerHands> createHands(int[][] cards)

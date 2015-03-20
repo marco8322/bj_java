@@ -22,7 +22,7 @@ public class TestCheckBlackjacks
     public void testHaveBlackjacks1()
     {
         BJFactory factory = new BJFactoryImpl();
-        BJGame game = new BJGame(factory);
+        BJGame game = new BJGame(factory, new BJSettingsImpl(null, null));
 
         BJHand dealerHand = createHand(new int[]{10, 11});
 
@@ -42,7 +42,7 @@ public class TestCheckBlackjacks
     public void testHaveBlackjacks2()
     {
         BJFactory factory = new BJFactoryImpl();
-        BJGame game = new BJGame(factory);
+        BJGame game = new BJGame(factory, new BJSettingsImpl(null, null));
 
         BJHand dealerHand = createHand(new int[]{8, 11});
 

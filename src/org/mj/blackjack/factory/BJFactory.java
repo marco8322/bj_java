@@ -15,6 +15,4 @@ public interface BJFactory
     BJHand createHand();
 
     public BJCardDeck createCardDeck(int values[]);
-
-    public BJPossibleMoves createPossibleMovesComputer();
 }

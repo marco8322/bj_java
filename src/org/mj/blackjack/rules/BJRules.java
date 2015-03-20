@@ -1,9 +1,6 @@
 package org.mj.blackjack.rules;
 
 import org.mj.blackjack.hand.BJHand;
-import org.mj.blackjack.moves.BJMove;
-
-import java.util.Set;
 
 /**
  * Created by marcojacques on 15-03-05.
@@ -27,8 +24,6 @@ public interface BJRules
     boolean onlyOneCardAfterSplittingAces();
 
     boolean mayReSplitAces();
-
-    Set<BJMove> getPossibleMoves(BJHand hand, int numberSplitsDone);
 
     int payBlackjack(int bet);
 

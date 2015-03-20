@@ -9,7 +9,6 @@ import org.mj.blackjack.moves.BJNextMove;
 import org.mj.blackjack.player.BJPlayer;
 import org.mj.blackjack.rules.BJRules;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,15 +23,17 @@ public class BJGame
      * Private fields
      */
     private final BJFactory factory;
+    private final BJSettings settings;
 
     /**
      * Constructor: takes the factory object
      *
      * @param factory: factory object
      */
-    public BJGame(BJFactory factory)
+    public BJGame(BJFactory factory, BJSettings settings)
     {
         this.factory = factory;
+        this.settings = settings;
     }
 
     /**
@@ -107,7 +108,6 @@ public class BJGame
             shouldDealerPlay = completePlayerHands(
                     playerHands,
                     dealerHand.getCard(0),
-                    rules,
                     nextMove,
                     cardDeck
             );
@@ -205,14 +205,12 @@ public class BJGame
      *
      * @param playerHands: list of players with their hands
      * @param dealerFaceCard: the dealer face card
-     * @param rules: the rules for the game
      * @param nextMove: the next move getter
      * @param cardDeck: the card deck
      * @return true if there is any hands that stayed (requires the dealer to deal)
      */
     boolean completePlayerHands(List<PlayerHands> playerHands,
                                 BJCard dealerFaceCard,
-                                BJRules rules,
                                 BJNextMove nextMove,
                                 BJCardDeck cardDeck)
     {
@@ -241,8 +239,9 @@ public class BJGame
                     BJMove moveToMake = nextMove.getNextMove(
                             currentHandWithBet.hand,
                             dealerFaceCard,
-                            factory.createPossibleMovesComputer().getPossibleMoves(
-                                    currentHandWithBet.hand, numberSplitsDone, rules
+                            settings.getPossibleMovesComputer().getPossibleMoves(
+                                    currentHandWithBet.hand, numberSplitsDone,
+                                    settings.getRules()
                             )
                     );
 

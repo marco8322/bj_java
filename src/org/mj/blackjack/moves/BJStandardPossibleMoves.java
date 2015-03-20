@@ -25,9 +25,9 @@ public class BJStandardPossibleMoves
         int nbCards = currentHand.getNbCards();
         if( nbCards == 2 )
         {
-            // Check if surrender is possible
+            // Check if surrender is possible.  If allowed and we did not split already.
             //
-            if( rules.surrenderAllowed() )
+            if( rules.surrenderAllowed() && numberOfSplits == 0)
             {
                 possibleMoves.add(BJMove.SURRENDER);
             }
