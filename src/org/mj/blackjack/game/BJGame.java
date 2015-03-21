@@ -234,6 +234,15 @@ public class BJGame
                     if( currentHand.getNbCards() == 1 )
                     {
                         currentHand.addCard(cardDeck.nextCard());
+
+                        // Stop if we cannot re-split aces
+                        //
+                        if( currentHand.getCard(0).getValue() == 11
+                                && !settings.getRules().mayReSplitAces() )
+                        {
+                            currentHand.setState(BJHand.State.STAY);
+                            break;
+                        }
                     }
 
                     BJMove moveToMake = nextMove.getNextMove(
@@ -281,8 +290,10 @@ public class BJGame
 
                         case SPLIT:
                         {
+                            int initialBet = ph.getPlayer().getInitialBet();
                             BJHand newHand = currentHand.splitHand();
-                            allHandsWithBets.add(new HandWithBet(newHand, ph.getPlayer().getInitialBet()));
+                            allHandsWithBets.add(new HandWithBet(newHand, initialBet));
+                            ph.getPlayer().removeMoney(initialBet);
                             break;
                         }
 

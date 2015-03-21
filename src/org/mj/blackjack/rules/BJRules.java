@@ -21,8 +21,6 @@ public interface BJRules
 
     boolean doubleAllowedAfterSplit();
 
-    boolean onlyOneCardAfterSplittingAces();
-
     boolean mayReSplitAces();
 
     int payBlackjack(int bet);

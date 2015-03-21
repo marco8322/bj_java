@@ -75,12 +75,6 @@ public class BJStandardRules
     }
 
     @Override
-    public boolean onlyOneCardAfterSplittingAces()
-    {
-        return true;
-    }
-
-    @Override
     public boolean mayReSplitAces()
     {
         return false;
