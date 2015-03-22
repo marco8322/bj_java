@@ -292,8 +292,9 @@ public class BJGame
                         {
                             int initialBet = ph.getPlayer().getInitialBet();
                             BJHand newHand = currentHand.splitHand();
-                            allHandsWithBets.add(new HandWithBet(newHand, initialBet));
                             ph.getPlayer().removeMoney(initialBet);
+                            ph.addHand(newHand);
+                            allHandsWithBets.add(ph.getHandsWithBets().get(ph.getHandsWithBets().size()-1));
                             break;
                         }
 
