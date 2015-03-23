@@ -27,7 +27,8 @@ public class TestPlayDealerHand
                 new BJFactoryImpl(),
                 new BJSettingsImpl(
                         null,
-                        new BJStandardRules(false, 3, false)
+                        new BJStandardRules(false, 3, false),
+                        null
                 )
         );
 
@@ -54,7 +55,8 @@ public class TestPlayDealerHand
                 new BJFactoryImpl(),
                 new BJSettingsImpl(
                         null,
-                        new BJStandardRules(false, 3, false)
+                        new BJStandardRules(false, 3, false),
+                        null
                 )
         );
 
@@ -80,7 +82,8 @@ public class TestPlayDealerHand
                 new BJFactoryImpl(),
                 new BJSettingsImpl(
                         null,
-                        new BJStandardRules(false, 3, false)
+                        new BJStandardRules(false, 3, false),
+                        null
                 )
         );
 
@@ -106,7 +109,8 @@ public class TestPlayDealerHand
                 new BJFactoryImpl(),
                 new BJSettingsImpl(
                         null,
-                        new BJStandardRules(true, 3, false)
+                        new BJStandardRules(true, 3, false),
+                        null
                 )
         );
 

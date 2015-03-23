@@ -22,7 +22,7 @@ public class TestDealCards
     public void testDealCards()
     {
         BJFactory factory = new BJFactoryImpl();
-        BJGame game = new BJGame(factory, new BJSettingsImpl(null, null));
+        BJGame game = new BJGame(factory, new BJSettingsImpl(null, null, null));
 
         BJPlayer bjPlayer1 = new BJPlayerImpl(200);
         BJPlayer bjPlayer2 = new BJPlayerImpl(400);

@@ -35,7 +35,9 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null
+            )
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -71,7 +73,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -108,7 +111,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -145,7 +149,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -183,7 +188,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -225,7 +231,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -266,7 +273,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -305,7 +313,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -359,7 +368,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -415,7 +425,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -471,7 +482,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -524,7 +536,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -585,7 +598,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -639,7 +653,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, true))
+                new BJStandardRules(false, 3, true),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -680,7 +695,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -720,7 +736,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 2, false))
+                new BJStandardRules(false, 2, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -765,7 +782,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -805,7 +823,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false))
+                new BJStandardRules(false, 3, false),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -845,7 +864,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, true))
+                new BJStandardRules(false, 3, true),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -885,7 +905,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, true))
+                new BJStandardRules(false, 3, true),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -925,7 +946,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, true))
+                new BJStandardRules(false, 3, true),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(
@@ -998,7 +1020,8 @@ public class TestCompletePlayerHands
         BJFactory factory = new BJFactoryImpl();
         BJGame game = new BJGame(factory, new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, true))
+                new BJStandardRules(false, 3, true),
+                null)
         );
 
         List<BJGame.PlayerHands> playerHands = createHands(

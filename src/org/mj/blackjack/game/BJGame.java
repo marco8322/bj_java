@@ -6,6 +6,7 @@ import org.mj.blackjack.factory.BJFactory;
 import org.mj.blackjack.hand.BJHand;
 import org.mj.blackjack.moves.BJMove;
 import org.mj.blackjack.moves.BJNextMove;
+import org.mj.blackjack.payout.BJPayout;
 import org.mj.blackjack.player.BJPlayer;
 
 import java.util.LinkedList;
@@ -343,10 +344,9 @@ public class BJGame
      */
     void doPayouts(BJHand dealerHand, List<PlayerHands> playerHands)
     {
-        // TODO: add payouts to settings
-        //
         int dealerTotal = dealerHand.getTotalValue();
         boolean dealerHasBlackjack = (dealerHand.getState() == BJHand.State.BLACKJACK);
+        BJPayout payout = settings.getPayout();
 
         for( PlayerHands ph : playerHands )
         {
@@ -365,19 +365,20 @@ public class BJGame
                         {
                             // Pays blackjack
                             //
-                            //player.addMoney(bet + rules.payBlackjack(bet));
+                            player.addMoney(payout.payoutBlackjack(bet));
                         }
                         else
                         {
                             // push
                             //
-                            player.addMoney(bet);
+                            player.addMoney(payout.payoutPush(bet));
                         }
 
                         break;
                     }
 
                     case BUSTED:  // nothing to do
+                        player.addMoney(payout.payoutLost(bet));
                         break;
 
                     case STAY:
@@ -387,11 +388,15 @@ public class BJGame
                         {
                             if( playerTotal > dealerTotal )
                             {
-                                player.addMoney(bet + bet);
+                                player.addMoney(payout.payoutWin(bet));
                             }
                             else if ( playerTotal == dealerTotal )
                             {
-                                player.addMoney(bet);
+                                player.addMoney(payout.payoutPush(bet));
+                            }
+                            else
+                            {
+                                player.addMoney(payout.payoutLost(bet));
                             }
                         }
 
@@ -401,7 +406,7 @@ public class BJGame
                     case SURRENDER:
                     {
                         assert !dealerHasBlackjack;
-                        //player.addMoney(rules.paySurrender(bet));
+                        player.addMoney(payout.payoutSurrender(bet));
                         break;
                     }
 
