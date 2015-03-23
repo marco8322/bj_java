@@ -295,6 +295,7 @@ public class BJGame
                             ph.getPlayer().removeMoney(initialBet);
                             ph.addHand(newHand);
                             allHandsWithBets.add(ph.getHandsWithBets().get(ph.getHandsWithBets().size()-1));
+                            ++numberSplitsDone;
                             break;
                         }
 

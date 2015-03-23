@@ -515,16 +515,554 @@ public class TestCompletePlayerHands
         assertEquals(100, playerHands.get(0).getHandsWithBets().get(1).bet);
     }
 
-    /**
-     * TODO:
-     *
-     * - Test multiple splits
-     * - Test split + double
-     * - Test surrender
-     *
-     * Fail tests for invalid choice for all possible moves
-     */
 
+    /**
+     * Test simple split, no aces, one is busted
+     */
+    public void testReSplit()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, false))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,9}
+                }
+        );
+
+        BJNextMove bjNextMove = createBJNextMove(
+                Arrays.asList(BJMove.SPLIT, BJMove.STAY, BJMove.SPLIT, BJMove.STAY, BJMove.STAY)
+        );
+
+        boolean isAnyStay = game.completePlayerHands(
+                playerHands,
+                new BJCardImpl(10),
+                bjNextMove,
+                new BJCardDeckImpl(
+                        new BJCard[]{
+                                new BJCardImpl(8),
+                                new BJCardImpl(9),
+                                new BJCardImpl(7),
+                                new BJCardImpl(2)
+                        }
+                )
+        );
+
+        assertTrue(isAnyStay);
+        assertEquals(3, playerHands.get(0).getHandsWithBets().size());
+        assertEquals(-200, playerHands.get(0).getPlayer().getMoneyAmount());
+
+        BJHand handToCheck1 = playerHands.get(0).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.STAY, handToCheck1.getState());
+        assertEquals(17, handToCheck1.getTotalValue());
+        assertEquals(2, handToCheck1.getNbCards());
+        assertEquals(8, handToCheck1.getCard(1).getValue());
+        assertEquals(100, playerHands.get(0).getHandsWithBets().get(0).bet);
+
+        BJHand handToCheck2 = playerHands.get(0).getHandsWithBets().get(1).hand;
+        assertEquals(BJHand.State.STAY, handToCheck2.getState());
+        assertEquals(16, handToCheck2.getTotalValue());
+        assertEquals(2, handToCheck2.getNbCards());
+        assertEquals(7, handToCheck2.getCard(1).getValue());
+        assertEquals(100, playerHands.get(0).getHandsWithBets().get(1).bet);
+
+        BJHand handToCheck3 = playerHands.get(0).getHandsWithBets().get(2).hand;
+        assertEquals(BJHand.State.STAY, handToCheck3.getState());
+        assertEquals(11, handToCheck3.getTotalValue());
+        assertEquals(2, handToCheck3.getNbCards());
+        assertEquals(2, handToCheck3.getCard(1).getValue());
+        assertEquals(100, playerHands.get(0).getHandsWithBets().get(2).bet);
+    }
+
+    /**
+     * Test split + double
+     */
+    public void testSplitDouble()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, false))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,9}
+                }
+        );
+
+        BJNextMove bjNextMove = createBJNextMove(
+                Arrays.asList(BJMove.SPLIT, BJMove.STAY, BJMove.DOUBLE)
+        );
+
+        boolean isAnyStay = game.completePlayerHands(
+                playerHands,
+                new BJCardImpl(10),
+                bjNextMove,
+                new BJCardDeckImpl(
+                        new BJCard[]{
+                                new BJCardImpl(8),
+                                new BJCardImpl(2),
+                                new BJCardImpl(10)
+                        }
+                )
+        );
+
+        assertTrue(isAnyStay);
+        assertEquals(2, playerHands.get(0).getHandsWithBets().size());
+        assertEquals(-200, playerHands.get(0).getPlayer().getMoneyAmount());
+
+        BJHand handToCheck1 = playerHands.get(0).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.STAY, handToCheck1.getState());
+        assertEquals(17, handToCheck1.getTotalValue());
+        assertEquals(2, handToCheck1.getNbCards());
+        assertEquals(8, handToCheck1.getCard(1).getValue());
+        assertEquals(100, playerHands.get(0).getHandsWithBets().get(0).bet);
+
+        BJHand handToCheck2 = playerHands.get(0).getHandsWithBets().get(1).hand;
+        assertEquals(BJHand.State.STAY, handToCheck2.getState());
+        assertEquals(21, handToCheck2.getTotalValue());
+        assertEquals(3, handToCheck2.getNbCards());
+        assertEquals(2, handToCheck2.getCard(1).getValue());
+        assertEquals(10, handToCheck2.getCard(2).getValue());
+        assertEquals(200, playerHands.get(0).getHandsWithBets().get(1).bet);
+    }
+
+    /**
+     * Test surrender
+     */
+    public void testSurrender()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, true))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,7}
+                }
+        );
+
+        BJNextMove bjNextMove = createBJNextMove(
+                Arrays.asList(BJMove.SURRENDER)
+        );
+
+        boolean isAnyStay = game.completePlayerHands(
+                playerHands,
+                new BJCardImpl(10),
+                bjNextMove,
+                new BJCardDeckImpl(
+                        new BJCard[]{}
+                )
+        );
+
+        assertFalse(isAnyStay);
+        assertEquals(1, playerHands.get(0).getHandsWithBets().size());
+        assertEquals(0, playerHands.get(0).getPlayer().getMoneyAmount());
+
+        BJHand handToCheck1 = playerHands.get(0).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.SURRENDER, handToCheck1.getState());
+        assertEquals(16, handToCheck1.getTotalValue());
+        assertEquals(100, playerHands.get(0).getHandsWithBets().get(0).bet);
+    }
+
+
+    /**
+     * Test for checking that we do not have a split on the first hand and first move
+     */
+    public void testFailNoSplitFirstHand()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, false))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,7}
+                }
+        );
+
+        BJNextMove bjNextMove = createInvalidBJNextMove(
+                Arrays.asList(BJMove.SPLIT)
+        );
+
+        try
+        {
+            game.completePlayerHands(
+                    playerHands,
+                    new BJCardImpl(10),
+                    bjNextMove,
+                    new BJCardDeckImpl(
+                            new BJCard[]{}
+                    )
+            );
+
+            fail();
+        }
+        catch (InvalidBJNextMove e)
+        {
+            assertEquals(BJMove.SPLIT, e.invalidMove);
+        }
+    }
+
+    /**
+     * Test for checking that we do not have a split after the max number of splits have been reached
+     */
+    public void testFailNoSplitMaxSplits()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 2, false))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,9}
+                }
+        );
+
+        BJNextMove bjNextMove = createInvalidBJNextMove(
+                Arrays.asList(BJMove.SPLIT, BJMove.STAY, BJMove.SPLIT, BJMove.SPLIT)
+        );
+
+        try
+        {
+            game.completePlayerHands(
+                    playerHands,
+                    new BJCardImpl(10),
+                    bjNextMove,
+                    new BJCardDeckImpl(
+                            new BJCard[]{
+                                    new BJCardImpl(7),
+                                    new BJCardImpl(9),
+                                    new BJCardImpl(9),
+                                    new BJCardImpl(8)
+                            }
+                    )
+            );
+
+            fail();
+        }
+        catch (InvalidBJNextMove e)
+        {
+            assertEquals(BJMove.SPLIT, e.invalidMove);
+        }
+    }
+
+    /**
+     * Test for checking that we do not have a double after a first hit
+     */
+    public void testFailNoDouble()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, false))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,3}
+                }
+        );
+
+        BJNextMove bjNextMove = createInvalidBJNextMove(
+                Arrays.asList(BJMove.HIT, BJMove.DOUBLE)
+        );
+
+        try
+        {
+            game.completePlayerHands(
+                    playerHands,
+                    new BJCardImpl(10),
+                    bjNextMove,
+                    new BJCardDeckImpl(
+                            new BJCard[]{new BJCardImpl(2)}
+                    )
+            );
+
+            fail();
+        }
+        catch (InvalidBJNextMove e)
+        {
+            assertEquals(BJMove.DOUBLE, e.invalidMove);
+        }
+    }
+
+    /**
+     * Test for checking that we do not have a surrender if not allowed
+     */
+    public void testFailNoSurrenderNotAllowed()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, false))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,3}
+                }
+        );
+
+        BJNextMove bjNextMove = createInvalidBJNextMove(
+                Arrays.asList(BJMove.SURRENDER)
+        );
+
+        try
+        {
+            game.completePlayerHands(
+                    playerHands,
+                    new BJCardImpl(10),
+                    bjNextMove,
+                    new BJCardDeckImpl(
+                            new BJCard[]{new BJCardImpl(2)}
+                    )
+            );
+
+            fail();
+        }
+        catch (InvalidBJNextMove e)
+        {
+            assertEquals(BJMove.SURRENDER, e.invalidMove);
+        }
+    }
+
+    /**
+     * Test for checking that we do not have a surrender after a first hit
+     */
+    public void testFailNoSurrenderAfterFirstHit()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, true))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,3}
+                }
+        );
+
+        BJNextMove bjNextMove = createInvalidBJNextMove(
+                Arrays.asList(BJMove.HIT, BJMove.SURRENDER)
+        );
+
+        try
+        {
+            game.completePlayerHands(
+                    playerHands,
+                    new BJCardImpl(10),
+                    bjNextMove,
+                    new BJCardDeckImpl(
+                            new BJCard[]{new BJCardImpl(2)}
+                    )
+            );
+
+            fail();
+        }
+        catch (InvalidBJNextMove e)
+        {
+            assertEquals(BJMove.SURRENDER, e.invalidMove);
+        }
+    }
+
+    /**
+     * Test for checking that we do not have a surrender after a first hit
+     */
+    public void testFailNoSurrenderAfterSplit()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, true))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,9}
+                }
+        );
+
+        BJNextMove bjNextMove = createInvalidBJNextMove(
+                Arrays.asList(BJMove.SPLIT, BJMove.SURRENDER)
+        );
+
+        try
+        {
+            game.completePlayerHands(
+                    playerHands,
+                    new BJCardImpl(10),
+                    bjNextMove,
+                    new BJCardDeckImpl(
+                            new BJCard[]{new BJCardImpl(6), new BJCardImpl(5)}
+                    )
+            );
+
+            fail();
+        }
+        catch (InvalidBJNextMove e)
+        {
+            assertEquals(BJMove.SURRENDER, e.invalidMove);
+        }
+    }
+
+    /**
+     * Test with multi-players
+     */
+    public void testMultiplePlayers1()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, true))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,7},
+                        new int[]{3,3},
+                        new int[]{9,6}
+                }
+        );
+
+        BJNextMove bjNextMove = createBJNextMove(
+                Arrays.asList(
+                        BJMove.STAY,
+                        BJMove.SPLIT, BJMove.STAY, BJMove.STAY,
+                        BJMove.HIT
+                )
+        );
+
+        boolean isAnyStay = game.completePlayerHands(
+                playerHands,
+                new BJCardImpl(10),
+                bjNextMove,
+                new BJCardDeckImpl(
+                        new BJCard[]{
+                                new BJCardImpl(6), new BJCardImpl(8),
+                                new BJCardImpl(10)
+                        }
+                )
+        );
+
+        assertTrue(isAnyStay);
+        assertEquals(3, playerHands.size());
+
+        assertEquals(1, playerHands.get(0).getHandsWithBets().size());
+        assertEquals(0, playerHands.get(0).getPlayer().getMoneyAmount());
+
+        assertEquals(2, playerHands.get(1).getHandsWithBets().size());
+        assertEquals(-100, playerHands.get(1).getPlayer().getMoneyAmount());
+
+        assertEquals(1, playerHands.get(2).getHandsWithBets().size());
+        assertEquals(0, playerHands.get(2).getPlayer().getMoneyAmount());
+
+        BJHand handToCheck1 = playerHands.get(0).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.STAY, handToCheck1.getState());
+        assertEquals(16, handToCheck1.getTotalValue());
+        assertEquals(100, playerHands.get(0).getHandsWithBets().get(0).bet);
+
+        BJHand handToCheck2 = playerHands.get(1).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.STAY, handToCheck2.getState());
+        assertEquals(9, handToCheck2.getTotalValue());
+        assertEquals(100, playerHands.get(1).getHandsWithBets().get(0).bet);
+
+        BJHand handToCheck3 = playerHands.get(1).getHandsWithBets().get(1).hand;
+        assertEquals(BJHand.State.STAY, handToCheck3.getState());
+        assertEquals(11, handToCheck3.getTotalValue());
+        assertEquals(100, playerHands.get(1).getHandsWithBets().get(1).bet);
+
+        BJHand handToCheck4 = playerHands.get(2).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.BUSTED, handToCheck4.getState());
+        assertEquals(25, handToCheck4.getTotalValue());
+        assertEquals(100, playerHands.get(2).getHandsWithBets().get(0).bet);
+    }
+
+
+    /**
+     * Test with multi-players, all busted or blackjack
+     */
+    public void testMultiplePlayers2()
+    {
+        BJFactory factory = new BJFactoryImpl();
+        BJGame game = new BJGame(factory, new BJSettingsImpl(
+                new BJStandardPossibleMoves(),
+                new BJStandardRules(false, 3, true))
+        );
+
+        List<BJGame.PlayerHands> playerHands = createHands(
+                new int[][]{
+                        new int[]{9,7},
+                        new int[]{9,9},
+                        new int[]{10,11}
+                }
+        );
+
+        playerHands.get(2).getHandsWithBets().get(0).hand.setState(BJHand.State.BLACKJACK);
+
+        BJNextMove bjNextMove = createBJNextMove(
+                Arrays.asList(
+                        BJMove.HIT,
+                        BJMove.SPLIT, BJMove.HIT, BJMove.DOUBLE
+                )
+        );
+
+        boolean isAnyStay = game.completePlayerHands(
+                playerHands,
+                new BJCardImpl(10),
+                bjNextMove,
+                new BJCardDeckImpl(
+                        new BJCard[]{
+                                new BJCardImpl(6),
+                                new BJCardImpl(8), new BJCardImpl(6),
+                                new BJCardImpl(3), new BJCardImpl(10)
+                        }
+                )
+        );
+
+        assertFalse(isAnyStay);
+        assertEquals(3, playerHands.size());
+
+        assertEquals(1, playerHands.get(0).getHandsWithBets().size());
+        assertEquals(0, playerHands.get(0).getPlayer().getMoneyAmount());
+
+        assertEquals(2, playerHands.get(1).getHandsWithBets().size());
+        assertEquals(-200, playerHands.get(1).getPlayer().getMoneyAmount());
+
+        assertEquals(1, playerHands.get(2).getHandsWithBets().size());
+        assertEquals(0, playerHands.get(2).getPlayer().getMoneyAmount());
+
+        BJHand handToCheck1 = playerHands.get(0).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.BUSTED, handToCheck1.getState());
+        assertEquals(22, handToCheck1.getTotalValue());
+        assertEquals(100, playerHands.get(0).getHandsWithBets().get(0).bet);
+
+        BJHand handToCheck2 = playerHands.get(1).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.BUSTED, handToCheck2.getState());
+        assertEquals(23, handToCheck2.getTotalValue());
+        assertEquals(100, playerHands.get(1).getHandsWithBets().get(0).bet);
+
+        BJHand handToCheck3 = playerHands.get(1).getHandsWithBets().get(1).hand;
+        assertEquals(BJHand.State.BUSTED, handToCheck3.getState());
+        assertEquals(22, handToCheck3.getTotalValue());
+        assertEquals(200, playerHands.get(1).getHandsWithBets().get(1).bet);
+
+        BJHand handToCheck4 = playerHands.get(2).getHandsWithBets().get(0).hand;
+        assertEquals(BJHand.State.BLACKJACK, handToCheck4.getState());
+        assertEquals(21, handToCheck4.getTotalValue());
+        assertEquals(100, playerHands.get(2).getHandsWithBets().get(0).bet);
+    }
 
     /**
      * Create the hands
@@ -576,6 +1114,63 @@ public class TestCompletePlayerHands
                 assertTrue(possibleMoves.contains(nextMove));
 
                 return nextMove;
+            }
+        };
+    }
+
+    /**
+     * Exception for testing if we got the fact that we have an invalid move here
+     */
+    private static class InvalidBJNextMove
+        extends RuntimeException
+    {
+        final BJMove invalidMove;
+
+        InvalidBJNextMove(BJMove invalidMove_)
+        {
+            invalidMove = invalidMove_;
+        }
+    }
+
+
+    /**
+     * Creates a next move object which checks if a move is not a valid one.
+     * The check is done only on the last provided move (permits to get more cards
+     * or action to check invalid moves afterwards)
+     *
+     * @param nextMoves_: the list of moves
+     * @return the "invalid" BJNextMove object
+     */
+    private BJNextMove createInvalidBJNextMove(final List<BJMove> nextMoves_)
+    {
+        return new BJNextMove()
+        {
+            private List<BJMove> nextMoves = new LinkedList<BJMove>(nextMoves_);
+
+            @Override
+            public BJMove getNextMove(BJHand playerHand, BJCard dealerFaceCard, Collection<? extends BJMove> possibleMoves)
+            {
+                assertFalse(nextMoves.isEmpty());
+                BJMove nextMove = nextMoves.remove(0);
+
+                if( nextMoves.isEmpty() )
+                {
+                    if( possibleMoves.contains(nextMove) )
+                    {
+                        fail();
+                        return null;
+                    }
+                    else
+                    {
+                        throw new InvalidBJNextMove(nextMove);
+                    }
+                }
+                else
+                {
+                    assertTrue(possibleMoves.contains(nextMove));
+
+                    return nextMove;
+                }
             }
         };
     }
