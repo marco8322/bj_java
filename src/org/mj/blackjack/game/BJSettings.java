@@ -1,6 +1,7 @@
 package org.mj.blackjack.game;
 
 import org.mj.blackjack.moves.BJPossibleMoves;
+import org.mj.blackjack.payout.BJPayout;
 import org.mj.blackjack.rules.BJRules;
 
 /**
@@ -13,4 +14,6 @@ public interface BJSettings
     BJPossibleMoves getPossibleMovesComputer();
 
     BJRules getRules();
+
+    BJPayout getPayout();
 }

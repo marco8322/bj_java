@@ -7,7 +7,6 @@ import org.mj.blackjack.hand.BJHand;
 import org.mj.blackjack.moves.BJMove;
 import org.mj.blackjack.moves.BJNextMove;
 import org.mj.blackjack.player.BJPlayer;
-import org.mj.blackjack.rules.BJRules;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +86,7 @@ public class BJGame
      * @param players: list of players
      * @param cardDeck: the card decks
      */
-    public void playGame(List<BJPlayer> players, BJCardDeck cardDeck, BJRules rules, BJNextMove nextMove)
+    public void playGame(List<BJPlayer> players, BJCardDeck cardDeck, BJNextMove nextMove)
     {
         // Deal cards
         //
@@ -117,12 +116,12 @@ public class BJGame
         //
         if( shouldDealerPlay )
         {
-            playDealerHand(dealerHand, rules, cardDeck);
+            playDealerHand(dealerHand, cardDeck);
         }
 
         // Payout
         //
-        doPayouts(dealerHand, playerHands, rules);
+        doPayouts(dealerHand, playerHands);
     }
 
 
@@ -254,8 +253,6 @@ public class BJGame
                             )
                     );
 
-                    // TODO: add bets
-                    //
                     switch( moveToMake )
                     {
                         case HIT:
@@ -321,12 +318,11 @@ public class BJGame
      * Play the dealer hand
      *
      * @param dealerHand: the dealer hand
-     * @param rules: the rules of the game
      * @param cardDeck: the card deck
      */
-    void playDealerHand(BJHand dealerHand, BJRules rules, BJCardDeck cardDeck)
+    void playDealerHand(BJHand dealerHand, BJCardDeck cardDeck)
     {
-        boolean mustHitSoft17 = rules.doesDealerHitOnSoft17();
+        boolean mustHitSoft17 = settings.getRules().doesDealerHitOnSoft17();
 
         for(;;)
         {
@@ -344,10 +340,11 @@ public class BJGame
      *
      * @param dealerHand: the dealer hand
      * @param playerHands: the player hands
-     * @param rules: the rules (for payout on blackjack and surrender)
      */
-    void doPayouts(BJHand dealerHand, List<PlayerHands> playerHands, BJRules rules)
+    void doPayouts(BJHand dealerHand, List<PlayerHands> playerHands)
     {
+        // TODO: add payouts to settings
+        //
         int dealerTotal = dealerHand.getTotalValue();
         boolean dealerHasBlackjack = (dealerHand.getState() == BJHand.State.BLACKJACK);
 
@@ -368,7 +365,7 @@ public class BJGame
                         {
                             // Pays blackjack
                             //
-                            player.addMoney(bet + rules.payBlackjack(bet));
+                            //player.addMoney(bet + rules.payBlackjack(bet));
                         }
                         else
                         {
@@ -404,7 +401,7 @@ public class BJGame
                     case SURRENDER:
                     {
                         assert !dealerHasBlackjack;
-                        player.addMoney(rules.paySurrender(bet));
+                        //player.addMoney(rules.paySurrender(bet));
                         break;
                     }
 

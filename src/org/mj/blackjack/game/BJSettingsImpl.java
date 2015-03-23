@@ -1,6 +1,7 @@
 package org.mj.blackjack.game;
 
 import org.mj.blackjack.moves.BJPossibleMoves;
+import org.mj.blackjack.payout.BJPayout;
 import org.mj.blackjack.rules.BJRules;
 
 /**
@@ -13,11 +14,13 @@ public class BJSettingsImpl
 {
     private final BJPossibleMoves possibleMoves;
     private final BJRules rules;
+    private final BJPayout payout;
 
-    public BJSettingsImpl(BJPossibleMoves possibleMoves, BJRules rules)
+    public BJSettingsImpl(BJPossibleMoves possibleMoves, BJRules rules, BJPayout payout)
     {
         this.possibleMoves = possibleMoves;
         this.rules = rules;
+        this.payout = payout;
     }
 
     @Override
@@ -30,5 +33,11 @@ public class BJSettingsImpl
     public BJRules getRules()
     {
         return rules;
+    }
+
+    @Override
+    public BJPayout getPayout()
+    {
+        return payout;
     }
 }
