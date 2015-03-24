@@ -7,11 +7,9 @@ import org.mj.blackjack.card.BJCardImpl;
 import org.mj.blackjack.factory.BJFactory;
 import org.mj.blackjack.factory.BJFactoryImpl;
 import org.mj.blackjack.hand.BJHand;
-import org.mj.blackjack.hand.BJHandImpl;
 import org.mj.blackjack.moves.BJMove;
 import org.mj.blackjack.moves.BJNextMove;
 import org.mj.blackjack.moves.BJStandardPossibleMoves;
-import org.mj.blackjack.player.BJPlayerImpl;
 import org.mj.blackjack.rules.BJStandardRules;
 
 import java.util.Arrays;
@@ -40,13 +38,13 @@ public class TestCompletePlayerHands
             )
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{8,9}
+                        new int[]{8, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(Arrays.asList(BJMove.STAY));
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(Arrays.asList(BJMove.STAY));
 
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
@@ -77,13 +75,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{4,9}
+                        new int[]{4, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(Arrays.asList(BJMove.HIT, BJMove.STAY));
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(Arrays.asList(BJMove.HIT, BJMove.STAY));
 
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
@@ -115,13 +113,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{4,9}
+                        new int[]{4, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(Arrays.asList(BJMove.HIT));
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(Arrays.asList(BJMove.HIT));
 
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
@@ -153,13 +151,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{4,9}
+                        new int[]{4, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(Arrays.asList(BJMove.HIT));
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(Arrays.asList(BJMove.HIT));
 
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
@@ -192,13 +190,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{4,9}
+                        new int[]{4, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(Arrays.asList(BJMove.DOUBLE));
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(Arrays.asList(BJMove.DOUBLE));
 
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
@@ -235,13 +233,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{4,9}
+                        new int[]{4, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(Arrays.asList(BJMove.DOUBLE));
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(Arrays.asList(BJMove.DOUBLE));
 
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
@@ -277,13 +275,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{4,9}
+                        new int[]{4, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(Arrays.asList(BJMove.DOUBLE));
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(Arrays.asList(BJMove.DOUBLE));
 
         boolean isAnyStay = game.completePlayerHands(
                 playerHands,
@@ -317,13 +315,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,9}
+                        new int[]{9, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(BJMove.SPLIT, BJMove.STAY, BJMove.HIT, BJMove.STAY)
         );
 
@@ -372,13 +370,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,9}
+                        new int[]{9, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(BJMove.SPLIT, BJMove.HIT, BJMove.HIT, BJMove.STAY)
         );
 
@@ -429,13 +427,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,9}
+                        new int[]{9, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(BJMove.SPLIT, BJMove.HIT, BJMove.HIT)
         );
 
@@ -486,13 +484,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{11,11}
+                        new int[]{11, 11}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(BJMove.SPLIT)
         );
 
@@ -540,13 +538,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,9}
+                        new int[]{9, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(BJMove.SPLIT, BJMove.STAY, BJMove.SPLIT, BJMove.STAY, BJMove.STAY)
         );
 
@@ -602,13 +600,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,9}
+                        new int[]{9, 9}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(BJMove.SPLIT, BJMove.STAY, BJMove.DOUBLE)
         );
 
@@ -657,13 +655,13 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,7}
+                        new int[]{9, 7}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(BJMove.SURRENDER)
         );
 
@@ -699,9 +697,9 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,7}
+                        new int[]{9, 7}
                 }
         );
 
@@ -740,9 +738,9 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,9}
+                        new int[]{9, 9}
                 }
         );
 
@@ -786,9 +784,9 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,3}
+                        new int[]{9, 3}
                 }
         );
 
@@ -827,9 +825,9 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,3}
+                        new int[]{9, 3}
                 }
         );
 
@@ -868,9 +866,9 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,3}
+                        new int[]{9, 3}
                 }
         );
 
@@ -909,9 +907,9 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,9}
+                        new int[]{9, 9}
                 }
         );
 
@@ -950,15 +948,15 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,7},
-                        new int[]{3,3},
-                        new int[]{9,6}
+                        new int[]{9, 7},
+                        new int[]{3, 3},
+                        new int[]{9, 6}
                 }
         );
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(
                         BJMove.STAY,
                         BJMove.SPLIT, BJMove.STAY, BJMove.STAY,
@@ -1024,17 +1022,17 @@ public class TestCompletePlayerHands
                 null)
         );
 
-        List<BJGame.PlayerHands> playerHands = createHands(
+        List<BJGame.PlayerHands> playerHands = TestGameUtil.createHands(
                 new int[][]{
-                        new int[]{9,7},
-                        new int[]{9,9},
-                        new int[]{10,11}
+                        new int[]{9, 7},
+                        new int[]{9, 9},
+                        new int[]{10, 11}
                 }
         );
 
         playerHands.get(2).getHandsWithBets().get(0).hand.setState(BJHand.State.BLACKJACK);
 
-        BJNextMove bjNextMove = createBJNextMove(
+        BJNextMove bjNextMove = TestGameUtil.createBJNextMove(
                 Arrays.asList(
                         BJMove.HIT,
                         BJMove.SPLIT, BJMove.HIT, BJMove.DOUBLE
@@ -1085,60 +1083,6 @@ public class TestCompletePlayerHands
         assertEquals(BJHand.State.BLACKJACK, handToCheck4.getState());
         assertEquals(21, handToCheck4.getTotalValue());
         assertEquals(100, playerHands.get(2).getHandsWithBets().get(0).bet);
-    }
-
-    /**
-     * Create the hands
-     *
-     * @param cards: the cards to use
-     * @return the player hands structure
-     */
-    private List<BJGame.PlayerHands> createHands(int[][] cards)
-    {
-        List<BJGame.PlayerHands> playerHands = new LinkedList<BJGame.PlayerHands>();
-
-        for( int[] handValues : cards )
-        {
-            BJGame.PlayerHands ph = new BJGame.PlayerHands(new BJPlayerImpl(100));
-            playerHands.add(ph);
-
-            ph.getPlayer().setInitialBet(100);
-
-            BJHand hand = new BJHandImpl();
-            for ( int value : handValues )
-            {
-                hand.addCard(new BJCardImpl(value));
-            }
-
-            ph.addHand(hand);
-        }
-
-        return playerHands;
-    }
-
-    /**
-     * Create a next move object for testing purpose
-     *
-     * @param nextMoves_: list of next moves
-     * @return list of moves
-     */
-    private BJNextMove createBJNextMove(final List<BJMove> nextMoves_)
-    {
-        return new BJNextMove()
-        {
-            private List<BJMove> nextMoves = new LinkedList<BJMove>(nextMoves_);
-
-            @Override
-            public BJMove getNextMove(BJHand playerHand, BJCard dealerFaceCard, Collection<? extends BJMove> possibleMoves)
-            {
-                assertFalse(nextMoves.isEmpty());
-
-                BJMove nextMove = nextMoves.remove(0);
-                assertTrue(possibleMoves.contains(nextMove));
-
-                return nextMove;
-            }
-        };
     }
 
     /**

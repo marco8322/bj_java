@@ -38,7 +38,6 @@ public class BJPlayerImpl
     public void setInitialBet(int money)
     {
         initialBet = money;
-        bank -= money;
     }
 
     @Override

@@ -184,7 +184,8 @@ public class BJGame
     {
         // Check dealer hand first
         //
-        if( dealerHand.getTotalValue() == 21 )
+        boolean dealerHasBJ = dealerHand.getTotalValue() == 21;
+        if( dealerHasBJ )
         {
             dealerHand.setState(BJHand.State.BLACKJACK);
         }
@@ -196,6 +197,10 @@ public class BJGame
             if( hand.getTotalValue() == 21 )
             {
                 hand.setState(BJHand.State.BLACKJACK);
+            }
+            else if( dealerHasBJ )
+            {
+                hand.setState(BJHand.State.STAY);
             }
         }
     }

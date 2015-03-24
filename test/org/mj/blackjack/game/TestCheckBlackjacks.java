@@ -35,7 +35,7 @@ public class TestCheckBlackjacks
 
         assertEquals(BJHand.State.BLACKJACK, dealerHand.getState());
         assertEquals(BJHand.State.BLACKJACK, playerHands.get(0).getHandsWithBets().get(0).hand.getState());
-        assertEquals(BJHand.State.MAY_HIT, playerHands.get(1).getHandsWithBets().get(0).hand.getState());
+        assertEquals(BJHand.State.STAY, playerHands.get(1).getHandsWithBets().get(0).hand.getState());
         assertEquals(BJHand.State.BLACKJACK, playerHands.get(2).getHandsWithBets().get(0).hand.getState());
     }
 

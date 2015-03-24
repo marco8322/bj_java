@@ -4,10 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.mj.blackjack.card.TestBJCard;
 import org.mj.blackjack.card.TestBJCardDeck;
-import org.mj.blackjack.game.TestCheckBlackjacks;
-import org.mj.blackjack.game.TestCompletePlayerHands;
-import org.mj.blackjack.game.TestDealCards;
-import org.mj.blackjack.game.TestPlayDealerHand;
+import org.mj.blackjack.game.*;
 import org.mj.blackjack.hand.TestBJHand;
 import org.mj.blackjack.moves.TestBJStandardPossibleMoves;
 
@@ -30,6 +27,8 @@ public class AllBJTests
         suite.addTestSuite(TestBJStandardPossibleMoves.class);
         suite.addTestSuite(TestCompletePlayerHands.class);
         suite.addTestSuite(TestPlayDealerHand.class);
+        suite.addTestSuite(TestDoPayouts.class);
+        suite.addTestSuite(TestBJGame.class);
 
         return suite;
     }
