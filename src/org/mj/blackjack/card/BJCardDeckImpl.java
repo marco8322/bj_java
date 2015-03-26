@@ -28,4 +28,10 @@ public class BJCardDeckImpl
 
         return cards[currCard++];
     }
+
+    @Override
+    public void shuffle()
+    {
+        // nothing to do
+    }
 }

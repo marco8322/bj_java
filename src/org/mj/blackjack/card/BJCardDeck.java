@@ -8,4 +8,6 @@ package org.mj.blackjack.card;
 public interface BJCardDeck
 {
     BJCard nextCard();
+
+    void shuffle();
 }
