@@ -143,4 +143,15 @@ public class BJHandImpl
     {
         return cards.get(i);
     }
+
+    public String debugString()
+    {
+        String result = "Total: " + getTotalValue();
+        for( int i = 0; i < getNbCards(); ++i )
+        {
+            result += " ," + getCard(i).getValue();
+        }
+
+        return result;
+    }
 }

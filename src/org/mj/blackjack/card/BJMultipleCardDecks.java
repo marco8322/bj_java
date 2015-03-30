@@ -36,6 +36,10 @@ public class BJMultipleCardDecks
     public void shuffle()
     {
         Collections.shuffle(cards, random);
+        Collections.shuffle(cards, random);
+        Collections.shuffle(cards, random);
+
+        idxCard = 0;
     }
 
     @Override

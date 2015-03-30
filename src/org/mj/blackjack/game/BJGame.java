@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class BJGame
 {
+    private final boolean DEBUG = false;
+
     /**
      * Private fields
      */
@@ -94,6 +96,13 @@ public class BJGame
         List<PlayerHands> playerHands = new LinkedList<PlayerHands>();
         BJHand dealerHand = dealCards(players, cardDeck, playerHands);
 
+        if( DEBUG )
+        {
+            System.out.println("\nSTART GAME");
+            System.out.println("Dealer card: " + dealerHand.getCard(0).getValue());
+            System.out.println("Player: " + playerHands.get(0).getHandsWithBets().get(0).hand.debugString());
+        }
+
         // Check blackjack for dealer and players
         //
         checkBlackjacks(dealerHand, playerHands);
@@ -111,6 +120,13 @@ public class BJGame
                     nextMove,
                     cardDeck
             );
+        }
+        else
+        {
+            if( DEBUG )
+            {
+                System.out.println("\nDEALER HAS BLACKJACK");
+            }
         }
 
         // Dealer plays hand
@@ -259,6 +275,11 @@ public class BJGame
                             )
                     );
 
+                    if( DEBUG )
+                    {
+                        System.out.println("Next move: " + moveToMake.toString());
+                    }
+
                     switch( moveToMake )
                     {
                         case HIT:
@@ -305,6 +326,11 @@ public class BJGame
                         default:
                             throw new IllegalStateException("NOT IMPLEMENTED");
                     }
+
+                    if( DEBUG )
+                    {
+                        System.out.println("Hand: " + currentHand.debugString());
+                    }
                 }
 
                 // If at least one hand has stay, we need the dealer to deal
@@ -338,6 +364,11 @@ public class BJGame
             if( total == 17 && (!mustHitSoft17 || !dealerHand.isSoftHand())) break;
 
             dealerHand.addCard(cardDeck.nextCard());
+        }
+
+        if( DEBUG )
+        {
+            System.out.println("DEALER: " + dealerHand.debugString());
         }
     }
 
@@ -391,7 +422,11 @@ public class BJGame
                         int playerTotal = hand.getTotalValue();
                         if( !dealerHasBlackjack )
                         {
-                            if( playerTotal > dealerTotal )
+                            if( dealerTotal > 21 )
+                            {
+                                player.addMoney(payout.payoutWin(bet));
+                            }
+                            else if( playerTotal > dealerTotal )
                             {
                                 player.addMoney(payout.payoutWin(bet));
                             }

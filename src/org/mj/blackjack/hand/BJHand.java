@@ -84,4 +84,9 @@ public interface BJHand
      * @return the card
      */
     BJCard getCard(int i);
+
+    /**
+     * @return a debug string
+     */
+    String debugString();
 }
