@@ -13,10 +13,10 @@ import java.util.Random;
 public class BJMultipleCardDecks
     implements BJCardDeck
 {
-    private static int values[] = {2,3,4,5,6,7,8,9,10,10,10,10,11};
-    private final List<BJCard> cards;
-    private int idxCard;
-    private final Random random;
+    static int values[] = {2,3,4,5,6,7,8,9,10,10,10,10,11};
+    protected final List<BJCard> cards;
+    protected int idxCard;
+    protected final Random random;
 
     public BJMultipleCardDecks(int nbDecks)
     {
