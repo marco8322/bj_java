@@ -8,13 +8,16 @@ import org.mj.blackjack.game.BJGame;
 import org.mj.blackjack.game.BJSettings;
 import org.mj.blackjack.game.BJSettingsImpl;
 import org.mj.blackjack.moves.BJCompareNextMove;
-import org.mj.blackjack.moves.BJMove;
 import org.mj.blackjack.moves.BJStandardPossibleMoves;
 import org.mj.blackjack.payout.BJStandardPayout;
 import org.mj.blackjack.player.BJPlayer;
 import org.mj.blackjack.player.BJPlayerImpl;
 import org.mj.blackjack.rules.BJStandardRules;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
@@ -25,39 +28,16 @@ import java.util.Arrays;
  */
 public class BJCompareMain
 {
-    private static class Args
-    {
-        private int playerHand;
-        private BJKnownFirstCardsCardDeck.Kind kind;
-        private BJMove nextMove;
-        private int dealerCard;
-        private int numberDecks;
-
-        Args(int playerHand_,
-             BJKnownFirstCardsCardDeck.Kind kind_,
-             BJMove nextMove_,
-             int dealerCard_,
-             int numberDecks_
-        )
-        {
-            playerHand = playerHand_;
-            kind = kind_;
-            nextMove = nextMove_;
-            dealerCard = dealerCard_;
-            numberDecks = numberDecks_;
-        }
-    }
-
-    public static void main(String[] args)
+    public static void main(String[] cmdLineArgs)
     {
         final int MAX_LOOPS = 100000;
 
-        Args parsedArgs = parseCommandLine(args);
+        BJMainArgs args = parseCommandLine(cmdLineArgs);
 
-        BJCompareNextMove nextMove = new BJCompareNextMove(parsedArgs.nextMove);
+        BJCompareNextMove nextMove = new BJCompareNextMove(args.nextMove);
         BJCardDeck cardDeck = new BJKnownFirstCardsCardDeck(
-                parsedArgs.playerHand, parsedArgs.kind,
-                parsedArgs.dealerCard, parsedArgs.numberDecks
+                args.playerHand, args.kind,
+                args.dealerCard, args.numberDecks
         );
 
         BJSettings settings = new BJSettingsImpl(
@@ -86,6 +66,11 @@ public class BJCompareMain
             //System.out.println("After hand: " + player.getMoneyAmount() + ", total: " + totalAmount);
         }
 
+        System.out.println("Player hand: " + args.playerHand);
+        System.out.println("Kind: " + args.kind);
+        System.out.println("Dealer card: " + args.dealerCard);
+        System.out.println("Next move: " + args.nextMove);
+        System.out.println("Number of decks: " + args.numberDecks);
         System.out.println();
         System.out.println("Total: " + totalAmount);
 
@@ -93,7 +78,31 @@ public class BJCompareMain
         System.out.println(new DecimalFormat("#0.00").format(average));
     }
 
-    private static Args parseCommandLine(String[] args)
+    private static BJMainArgs parseCommandLine(String[] cmdLineArgs)
+    {
+        File file = new File(cmdLineArgs[0]);
+        if( !file.exists() )
+        {
+            System.out.println("File does not exist: " + file.getName());
+            System.exit(1);
+        }
+
+        try
+        {
+            JAXBContext jaxbContext = JAXBContext.newInstance(BJMainArgs.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            return (BJMainArgs) jaxbUnmarshaller.unmarshal(file);
+        }
+        catch (JAXBException e)
+        {
+            System.out.println("Exception reading XML file: " + e.getMessage());
+            System.exit(1);
+        }
+
+        return new BJMainArgs();
+    }
+
+    /*private static Args parseCommandLine(String[] args)
     {
         int playerHand = 18;
         BJKnownFirstCardsCardDeck.Kind kind = BJKnownFirstCardsCardDeck.Kind.Normal;
@@ -152,5 +161,5 @@ public class BJCompareMain
         }
 
         return new Args(playerHand, kind, nextMove, dealerCard, numberDecks);
-    }
+    } */
 }
