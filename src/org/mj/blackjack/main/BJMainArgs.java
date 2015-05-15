@@ -29,6 +29,9 @@ public class BJMainArgs
     @XmlElement(name = "numberDecks")
     public int numberDecks;
 
+    @XmlElement(name = "hitSoft17")
+    public boolean hitSoft17;
+
     public BJMainArgs()
     {
         // Assign default values
@@ -38,5 +41,6 @@ public class BJMainArgs
         nextMove = BJMove.STAY;
         dealerCard = 10;
         numberDecks = 6;
+        hitSoft17 = false;
     }
 }

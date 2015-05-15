@@ -30,7 +30,7 @@ public class BJCompareMain
 {
     public static void main(String[] cmdLineArgs)
     {
-        final int MAX_LOOPS = 100000;
+        final int MAX_LOOPS = 1000000;
 
         BJMainArgs args = parseCommandLine(cmdLineArgs);
 
@@ -42,7 +42,7 @@ public class BJCompareMain
 
         BJSettings settings = new BJSettingsImpl(
                 new BJStandardPossibleMoves(),
-                new BJStandardRules(false, 3, false),
+                new BJStandardRules(args.hitSoft17, 3, false),
                 new BJStandardPayout()
         );
 
@@ -71,6 +71,7 @@ public class BJCompareMain
         System.out.println("Dealer card: " + args.dealerCard);
         System.out.println("Next move: " + args.nextMove);
         System.out.println("Number of decks: " + args.numberDecks);
+        System.out.println("Hit soft 17: " + args.hitSoft17);
         System.out.println();
         System.out.println("Total: " + totalAmount);
 
