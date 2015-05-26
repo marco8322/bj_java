@@ -27,7 +27,7 @@ public class BJMainArgs
     public List<BJMove> nextMove;
 
     @XmlElement(name = "dealerCard")
-    public int dealerCard;
+    public List<Integer> dealerCard;
 
     @XmlElement(name = "numberDecks")
     public int numberDecks;
@@ -42,7 +42,7 @@ public class BJMainArgs
         playerHand = 19;
         kind = BJKnownFirstCardsCardDeck.Kind.Normal;
         nextMove = new ArrayList<BJMove>(Collections.singletonList(BJMove.STAY));
-        dealerCard = 10;
+        dealerCard = new ArrayList<Integer>(Collections.singletonList(10));
         numberDecks = 6;
         hitSoft17 = false;
     }

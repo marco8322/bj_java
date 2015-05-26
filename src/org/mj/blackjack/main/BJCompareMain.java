@@ -37,52 +37,54 @@ public class BJCompareMain
 
         System.out.println("Player hand: " + args.playerHand);
         System.out.println("Kind: " + args.kind);
-        System.out.println("Dealer card: " + args.dealerCard);
         System.out.println("Number of decks: " + args.numberDecks);
         System.out.println("Hit soft 17: " + args.hitSoft17);
         System.out.println();
 
-        for(BJMove move : args.nextMove )
+        for( int dealerCard : args.dealerCard )
         {
-            BJCompareNextMove nextMove = new BJCompareNextMove(move);
-            BJCardDeck cardDeck = new BJKnownFirstCardsCardDeck(
-                    args.playerHand, args.kind,
-                    args.dealerCard, args.numberDecks
-            );
-
-            BJSettings settings = new BJSettingsImpl(
-                    new BJStandardPossibleMoves(),
-                    new BJStandardRules(args.hitSoft17, 3, false),
-                    new BJStandardPayout()
-            );
-
-            BJFactory factory = new BJFactoryImpl();
-
-            long totalAmount = 0;
-
-            for (int i = 0; i < MAX_LOOPS; ++i)
+            for (BJMove move : args.nextMove)
             {
-                BJPlayer player = new BJPlayerImpl(0);
+                BJCompareNextMove nextMove = new BJCompareNextMove(move);
+                BJCardDeck cardDeck = new BJKnownFirstCardsCardDeck(
+                        args.playerHand, args.kind,
+                        dealerCard, args.numberDecks
+                );
 
-                player.setInitialBet(100);
-                nextMove.reset();
+                BJSettings settings = new BJSettingsImpl(
+                        new BJStandardPossibleMoves(),
+                        new BJStandardRules(args.hitSoft17, 3, false),
+                        new BJStandardPayout()
+                );
 
-                BJGame game = new BJGame(factory, settings);
-                cardDeck.shuffle();
+                BJFactory factory = new BJFactoryImpl();
 
-                game.playGame(Arrays.asList(player), cardDeck, nextMove);
-                totalAmount += player.getMoneyAmount();
+                long totalAmount = 0;
 
-                //System.out.println("After hand: " + player.getMoneyAmount() + ", total: " + totalAmount);
+                for (int i = 0; i < MAX_LOOPS; ++i)
+                {
+                    BJPlayer player = new BJPlayerImpl(0);
+
+                    player.setInitialBet(100);
+                    nextMove.reset();
+
+                    BJGame game = new BJGame(factory, settings);
+                    cardDeck.shuffle();
+
+                    game.playGame(Arrays.asList(player), cardDeck, nextMove);
+                    totalAmount += player.getMoneyAmount();
+
+                    //System.out.println("After hand: " + player.getMoneyAmount() + ", total: " + totalAmount);
+                }
+
+                System.out.print("Dealer card: " + dealerCard + ", Next move: " + move + ", RESULT = ");
+                //System.out.println();
+                //System.out.println("Total: " + totalAmount);
+
+                double average = (((double) totalAmount) / (double) MAX_LOOPS);
+                System.out.println(new DecimalFormat("#0.00").format(average));
+                //System.out.println();
             }
-
-            System.out.println("Next move: " + move);
-            System.out.println();
-            System.out.println("Total: " + totalAmount);
-
-            double average = (((double) totalAmount) / (double) MAX_LOOPS);
-            System.out.println(new DecimalFormat("#0.00").format(average));
-            System.out.println();
         }
     }
 
