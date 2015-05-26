@@ -4,6 +4,9 @@ import org.mj.blackjack.card.BJKnownFirstCardsCardDeck;
 import org.mj.blackjack.moves.BJMove;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by marcojacques on 2015-04-14.
@@ -21,7 +24,7 @@ public class BJMainArgs
     public BJKnownFirstCardsCardDeck.Kind kind;
 
     @XmlElement(name = "nextMove")
-    public BJMove nextMove;
+    public List<BJMove> nextMove;
 
     @XmlElement(name = "dealerCard")
     public int dealerCard;
@@ -38,7 +41,7 @@ public class BJMainArgs
         //
         playerHand = 19;
         kind = BJKnownFirstCardsCardDeck.Kind.Normal;
-        nextMove = BJMove.STAY;
+        nextMove = new ArrayList<BJMove>(Collections.singletonList(BJMove.STAY));
         dealerCard = 10;
         numberDecks = 6;
         hitSoft17 = false;
