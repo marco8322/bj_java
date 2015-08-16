@@ -31,7 +31,7 @@ public class BJCompareMain
 {
     public static void main(String[] cmdLineArgs)
     {
-        final int MAX_LOOPS = 1000000;
+        final int MAX_LOOPS = 2000000;
 
         BJMainArgs args = parseCommandLine(cmdLineArgs);
 
@@ -39,10 +39,10 @@ public class BJCompareMain
         System.out.println("Kind: " + args.kind);
         System.out.println("Number of decks: " + args.numberDecks);
         System.out.println("Hit soft 17: " + args.hitSoft17);
-        System.out.println();
 
         for( int dealerCard : args.dealerCard )
         {
+            System.out.println();
             for (BJMove move : args.nextMove)
             {
                 BJCompareNextMove nextMove = new BJCompareNextMove(move);
